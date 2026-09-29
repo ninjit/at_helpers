@@ -1,0 +1,46 @@
+SHELL := /usr/bin/bash
+
+export MAKE
+export FC = gfortran
+export CC = gcc
+export RM = rm -f
+export CFLAGS = -O2
+export FFLAGS = -O2 -ffast-math -funroll-all-loops -fomit-frame-pointer -std=gnu -I../misc -I../tslib
+
+.PHONY: all install clean
+
+all:
+	$(MAKE) -C misc all
+	$(MAKE) -C tslib all
+	$(MAKE) -C Bellhop all
+	$(MAKE) -C Kraken all
+	$(MAKE) -C KrakenField all
+	$(MAKE) -C Scooter all
+	@echo "Acoustics Toolbox built."
+
+install:
+	$(MAKE) -C misc all
+	$(MAKE) -C tslib all
+	$(MAKE) -C Bellhop install
+	$(MAKE) -C Kraken install
+	$(MAKE) -C KrakenField install
+	$(MAKE) -C Scooter install
+	@echo "Acoustics Toolbox installed."
+
+clean:
+	-$(RM) bin/*.exe
+	-find . -name '*.png' -exec rm -f {} +
+	-find . -name '*.eps' -exec rm -f {} +
+	-find . -name '*.mod' -exec rm -f {} +
+	-find . -name '*.grn' -exec rm -f {} +
+	-find . -name '*.shd' -exec rm -f {} +
+	-find . -name '*.shd.mat' -exec rm -f {} +
+	-find . -name '*.prt' -exec rm -f {} +
+	-$(MAKE) -C misc clean
+	-$(MAKE) -C tslib clean
+	-$(MAKE) -C Bellhop clean
+	-$(MAKE) -C Kraken clean
+	-$(MAKE) -C KrakenField clean
+	-$(MAKE) -C Krakel clean
+	-$(MAKE) -C Scooter clean
+	-$(MAKE) -C tests clean
